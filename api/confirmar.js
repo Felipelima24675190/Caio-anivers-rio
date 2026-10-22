@@ -43,7 +43,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    var r = await fetch(url.replace(/\/$/, "") + "/rest/v1/confirmacoes", {
+    // Aceita tanto a Project URL quanto a URL da Data API (que já termina em /rest/v1).
+    var base = url.trim().replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
+    var r = await fetch(base + "/rest/v1/confirmacoes", {
       method: "POST",
       headers: {
         apikey: chave,
