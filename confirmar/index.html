@@ -7,11 +7,11 @@
 <meta name="description" content="Sexta, 11/12, a partir das 19h · Bar Santa Fé (1º piso), Jardim Botânico, Brasília/DF">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:url" content="https://caiofaz40.netlify.app/confirmar/">
+<meta property="og:url" content="https://caiofaz40.vercel.app/confirmar/">
 <meta property="og:title" content="40 do Caio · Confirme sua presença">
 <meta property="og:description" content="Sexta, 11/12, a partir das 19h · Bar Santa Fé (1º piso), Jardim Botânico, Brasília/DF">
-<meta property="og:image" content="https://caiofaz40.netlify.app/convite-whatsapp.jpg">
-<meta property="og:image:secure_url" content="https://caiofaz40.netlify.app/convite-whatsapp.jpg">
+<meta property="og:image" content="https://caiofaz40.vercel.app/convite-whatsapp.jpg">
+<meta property="og:image:secure_url" content="https://caiofaz40.vercel.app/convite-whatsapp.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1080">
 <meta property="og:image:height" content="1350">
@@ -191,8 +191,7 @@ footer{text-align:center;font-size:12px;color:var(--suave);font-weight:600;lette
       <h2>Confirme sua presença</h2>
       <p class="hint">Leva menos de 30 segundos. Se mudar de ideia, é só responder de novo com o mesmo nome.</p>
       
-      <form id="f" name="confirmacao" method="POST" data-netlify="true" netlify-honeypot="site" novalidate>
-        <input type="hidden" name="form-name" value="confirmacao">
+      <form id="f" name="confirmacao" method="POST" action="/api/confirmar" novalidate>
         <input type="hidden" name="quantidade" id="hQtd" value="0">
         <div class="field">
           <label class="q" for="nome">Seu nome completo</label>
@@ -313,14 +312,8 @@ footer{text-align:center;font-size:12px;color:var(--suave);font-weight:600;lette
     var falha = function(){ btn.disabled = false; btn.textContent = "Enviar confirmação";
       mostraErro("Não conseguimos registrar agora. Confere a internet e toca em Enviar de novo."); };
 
-    var corpo = new URLSearchParams();
-    corpo.append("form-name", "confirmacao");
-    corpo.append("nome", nome);
-    corpo.append("presenca", st === "sim" ? "Vou participar" : "Não poderei comparecer");
-    corpo.append("quantidade", String(dados.quantidade));
-    corpo.append("acompanhante", acomp.join(", "));
-    corpo.append("site", dados.site);
-    fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: corpo.toString() })
+    var corpo = { nome: nome, status: st, quantidade: dados.quantidade, acompanhante: acomp[0] || "", site: dados.site };
+    fetch("/api/confirmar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) })
       .then(function(r){ if (r.ok) ok({}); else falha(); })
       .catch(falha);
   });
