@@ -1,6 +1,5 @@
 {
-  "redirects": [
-    { "source": "/painel", "destination": "/", "permanent": false },
-    { "source": "/painel/:path*", "destination": "/", "permanent": false }
+  "routes": [
+    { "src": "/painel(?:/.*)?", "status": 302, "headers": { "Location": "/" } }
   ]
 }
