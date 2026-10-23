@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/painel", "destination": "/", "permanent": false },
+    { "source": "/painel/:path*", "destination": "/", "permanent": false }
+  ]
+}
